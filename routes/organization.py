@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, Blueprint, request
-from  sqlalchemy.exc import SQLAlchemyError
+from flask import jsonify, Blueprint, request
+from sqlalchemy.exc import SQLAlchemyError
 from services.organization_service import *
 
 org_bp = Blueprint('organization', __name__, url_prefix='/organization')
@@ -18,7 +18,7 @@ def add_organization():
             # Handle missing 'name' in the request payload
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
           
