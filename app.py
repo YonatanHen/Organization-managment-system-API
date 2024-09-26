@@ -11,6 +11,6 @@ app.register_blueprint(ep_bp)
 app.register_blueprint(org_bp)
 
 if __name__ == '__main__':
-    app.run() #debug=True
+    app.run(debug=True) 
 
 
