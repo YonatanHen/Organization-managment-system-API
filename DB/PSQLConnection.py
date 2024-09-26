@@ -1,5 +1,8 @@
 import os
+import sys
 from sqlalchemy import create_engine
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from models import Base
 
 #In production environment we must keep credentials secure by enabling them in the activate script of the venv

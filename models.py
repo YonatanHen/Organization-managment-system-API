@@ -1,23 +1,29 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, Mapped
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, Mapped, mapped_column, declarative_base
+from typing import List
 
 Base = declarative_base()
 
 class Organization(Base):
     __tablename__ = "organizations"
     
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-
-class User(Base):
-    __tablename__ = "users"
-    
-    id = Column(Integer, primary_key=True)
-    name = Column(String, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(unique=True, nullable=False)
+    endpoints: Mapped[List['Endpoint']] = relationship(backref='organization')
+    users: Mapped[List['User']] = relationship(backref='organization')
     
 class Endpoint(Base):
     __tablename__ = "endpoints"
     
-    id = Column(Integer, primary_key=True)
-    name = Column(String, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(unique=True, nullable=False)
+    organization_id: Mapped[int] = mapped_column(ForeignKey('organizations.id', ondelete='CASCADE'))
+    users: Mapped[List['User']] = relationship(backref='endpoint')
+    
+class User(Base):
+    __tablename__ = "users"
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(unique=True, nullable=False)
+    organization_id: Mapped[int] = mapped_column(ForeignKey('organizations.id', ondelete='CASCADE'))
+    endpoint_id: Mapped[int] = mapped_column(ForeignKey('endpoints.id', ondelete='CASCADE'))
