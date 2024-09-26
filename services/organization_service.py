@@ -49,6 +49,10 @@ def update_organization(id: int, new_name: str):
     return res 
 
 def delete_organization(id: int):
+    '''
+    Delete an organization
+    @param id: ID of the organization in the DB
+    '''
     session=get_db_session()
     
     organization = session.query(Organization).filter_by(id=id).first()
