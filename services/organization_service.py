@@ -20,11 +20,26 @@ def create_organization(name: str):
     return res 
 
 
-def update_organization(id: int, name: str):
+def update_organization(id: int, new_name: str):
     '''
-    Update the name of an existing organization
+    Update the an existing organization.
+    @param id: ID of the organization in the DB
     @param name: New name for the organization
     '''
-    with session_scope() as session:
-        session.query(Organization).filter()
+    session=get_db_session()
+    
+    organization = session.query(Organization).filter_by(id=id).first()
+    
+    if organization is None:
+        raise ValueError(f"No organization with id #{id} was found")
+    
+    organization.name = new_name
+    
+    session.commit()
+    
+    res = {"id": organization.id, "name": organization.name}
+    
+    session.close()
+    
+    return res 
     

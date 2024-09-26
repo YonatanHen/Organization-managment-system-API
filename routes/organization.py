@@ -25,16 +25,16 @@ def add_organization():
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
           
 
-@org_bp.route('/<int:id>', methods=['PUT, DELETE'])
+@org_bp.route('/<int:id>', methods=['PUT', 'DELETE'])
 def update_or_delete_organization(id):
     if request.method == 'PUT':
         try:
             data = request.get_json()
 
-            organization_name = update_organization(data['name'])
+            organization = update_organization(id, data['name'])
             
-            return f"Organization #{id} name updated successfully to {organization_name}"
-            
+            return jsonify(organization)    
+                 
         except KeyError:
             # Handle missing 'name' in the request payload
             return jsonify({'error': 'The "name" field is required.'}), 400
