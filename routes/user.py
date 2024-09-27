@@ -13,7 +13,7 @@ def add_user():
             ep_id = data.get('ep_id')
             ep_name = data.get('ep_name')
 
-            user = create_user(data['name'], ep_id, ep_name)
+            user = create_user(data['name'], ep_id)
             
             return jsonify({"message": "User added successfully", "user": user}) 
             
