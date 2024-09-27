@@ -59,6 +59,6 @@ def update_or_delete_endpoint(id: int):
             return jsonify({"message": "Endpoint deleted successfully", "endpoint": endpoint}) 
         
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.'}), 500
+            return jsonify({'error': 'Database error occurred.' + str(e)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 

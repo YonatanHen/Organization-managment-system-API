@@ -42,6 +42,8 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
     Update an existing endpoint.
     @param id: ID of the endpoint in the DB
     @param name: New name for the endpoint
+    @param org_id: ID of the organization we want to update
+    @param new_org: Name of the organization we want to update 
     '''
     if not any([new_name, org_id, new_org]):
         raise ValueError("At least one of 'new_name', 'org_id', or 'new_org' must be provided in the payload.")
@@ -49,18 +51,17 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
     session=get_db_session()
     
     endpoint = session.query(Endpoint).filter_by(id=id).first()
-    print(endpoint)
     
     if endpoint is None:
         session.close()
-        raise ValueError(f"endpoint with id #{id} wasn't found.")
+        raise ValueError(f"Endpoint with id #{id} wasn't found.")
    
     # Update endpoint's name
     if new_name is not None: 
         ep_by_name = session.query(Endpoint).filter_by(name=new_name).first()
         if ep_by_name is not None:
             session.close()
-            raise ValueError(f"endpoint '{new_name}' already exists.")
+            raise ValueError(f"Endpoint '{new_name}' already exists.")
     
         endpoint.name = new_name
 
@@ -74,8 +75,11 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
 
         if organization is None:
             session.close()
-            raise ValueError(f"Organization with id '{org_id}' or name '{new_org}' was not found.")
-        
+            if org_id:
+                raise ValueError(f"Could not find organization with id {org_id}.")
+            elif new_org:
+                raise ValueError(f"Could not find organization with name {new_org}.")
+            
         endpoint.organization_id = organization.id
 
     session.commit()
@@ -99,12 +103,12 @@ def delete_endpoint(id: int):
     if endpoint is None:
         session.close()
         raise ValueError(f"No endpoint with id #{id} was found")
-    
+        
     session.delete(endpoint)
     
     session.commit()
     
-    res = {"id": endpoint.id, "name": endpoint.name}
+    res = {"id": endpoint.id, "name": endpoint.name , "organization_id": endpoint.organization_id}
     
     session.close()
     
