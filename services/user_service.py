@@ -1,6 +1,27 @@
 from models import User, Endpoint
 from utils.create_sesssion import get_db_session
 
+def get_endpoint_by_user_id(id: int):
+    '''
+    Find user's registered endpoint by user id.
+    @param id: the user id  
+    '''
+    session=get_db_session()
+    
+    user = session.query(User).filter_by(id=id).first()
+    
+    if user is None:
+        session.close()
+        raise ValueError(f"No user with id #{id} was found")
+    
+    endpoint = session.query(Endpoint).filter_by(id=user.endpoint_id).first()
+
+    res = {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id} 
+       
+    session.close()
+    
+    return res 
+
 def create_user(name: str, ep_id: int, ep_name: str):
     '''
     Create a new user.

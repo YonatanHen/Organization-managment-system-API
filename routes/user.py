@@ -60,4 +60,15 @@ def update_or_delete_user(id: int):
             return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500        
+
+@user_bp.route('/<int:id>/endpoint', methods=['GET'])
+def get_endpoint(id):
+    try:
+        endpoint = get_endpoint_by_user_id(id)
+        
+        return jsonify(endpoint)
     
+    except SQLAlchemyError as e:
+        return jsonify({'error': 'Database error occurred.'}), 500
+    except Exception as e:
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500       
