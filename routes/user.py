@@ -71,4 +71,16 @@ def get_endpoint(id):
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
-        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500       
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500      
+
+@user_bp.route('/<int:id>/organization', methods=['GET'])
+def get_organization(id):
+    try:
+        organization = get_organization_by_user_id(id)
+        
+        return jsonify(organization)
+    
+    except SQLAlchemyError as e:
+        return jsonify({'error': 'Database error occurred.'}), 500
+    except Exception as e:
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  

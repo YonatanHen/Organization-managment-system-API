@@ -1,12 +1,16 @@
-from models import User, Endpoint
+from models import User, Endpoint, Organization
 from utils.create_sesssion import get_db_session
+from sqlalchemy.orm import Session
 
-def get_endpoint_by_user_id(id: int):
+def get_endpoint_by_user_id(id: int, parent_session: Session = None):
     '''
     Find user's registered endpoint by user id.
     @param id: the user id  
     '''
-    session=get_db_session()
+    if not parent_session:
+        session = get_db_session()
+    else:
+        session = parent_session
     
     user = session.query(User).filter_by(id=id).first()
     
@@ -17,10 +21,30 @@ def get_endpoint_by_user_id(id: int):
     endpoint = session.query(Endpoint).filter_by(id=user.endpoint_id).first()
 
     res = {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id} 
+    
+    if not parent_session:
+        session.close()
+    
+    return res
+
+
+def get_organization_by_user_id(id: int):
+    '''
+    Find user's registered organiztion by user id.
+    @param id: the user id  
+    '''
+    session = get_db_session()
+    
+    endpoint = get_endpoint_by_user_id(id, session)
+    
+    organization=session.query(Organization).filter_by(id=endpoint['organization_id']).first()
+    
+    res = {"id": organization.id, "name": organization.name}
        
     session.close()
     
     return res 
+
 
 def create_user(name: str, ep_id: int, ep_name: str):
     '''
