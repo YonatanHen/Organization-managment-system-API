@@ -49,26 +49,43 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
     session=get_db_session()
     
     endpoint = session.query(Endpoint).filter_by(id=id).first()
+    print(endpoint)
     
     if endpoint is None:
         session.close()
         raise ValueError(f"endpoint with id #{id} wasn't found.")
+   
+    # Update endpoint's name
+    if new_name is not None: 
+        ep_by_name = session.query(Endpoint).filter_by(name=new_name).first()
+        if ep_by_name is not None:
+            session.close()
+            raise ValueError(f"endpoint '{new_name}' already exists.")
     
-    ep_by_name = session.query(endpoint).filter_by(name=new_name).first()
-    
-    if ep_by_name is not None:
-        session.close()
-        raise ValueError(f"endpoint '{new_name}' already exists.")
-    
-    endpoint.name = new_name
-    
+        endpoint.name = new_name
+
+    # Update endpoint's organization
+    if org_id or new_org:
+        organization = None
+        if org_id:
+            organization = session.query(Organization).filter_by(id=org_id).first()
+        elif new_org:
+            organization = session.query(Organization).filter_by(name=new_org).first()
+
+        if organization is None:
+            session.close()
+            raise ValueError(f"Organization with id '{org_id}' or name '{new_org}' was not found.")
+        
+        endpoint.organization_id = organization.id
+
     session.commit()
     
-    res = {"id": endpoint.id, "name": endpoint.name}
+    res = {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}
     
     session.close()
     
     return res 
+
 
 def delete_endpoint(id: int):
     '''
