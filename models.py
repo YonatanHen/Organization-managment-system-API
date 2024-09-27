@@ -10,7 +10,6 @@ class Organization(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True, nullable=False)
     endpoints: Mapped[List['Endpoint']] = relationship(backref='organization')
-    users: Mapped[List['User']] = relationship(backref='organization')
     
 class Endpoint(Base):
     __tablename__ = "endpoints"
@@ -25,5 +24,4 @@ class User(Base):
     
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True, nullable=False)
-    organization_id: Mapped[int] = mapped_column(ForeignKey('organizations.id', ondelete='CASCADE'))
     endpoint_id: Mapped[int] = mapped_column(ForeignKey('endpoints.id', ondelete='CASCADE'))

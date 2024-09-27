@@ -10,7 +10,7 @@ def add_endpoint():
         try:
             data = request.get_json()
             
-            # Get 'org_id' and 'org_name', allowing either to be optional
+            # Get 'org_id' and 'org_name', allowing at least one of them to be be specified 
             org_id = data.get('org_id')
             org_name = data.get('org_name')
 
