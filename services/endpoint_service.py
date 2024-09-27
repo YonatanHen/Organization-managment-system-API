@@ -16,10 +16,12 @@ def create_endpoint(name: str, org_id: int, org_name: str):
     elif org_name is not None:
         organization = session.query(Organization).filter_by(name=org_name).first()
     else:
-       raise ValueError(f"Either organization name or organization id must be provided. Can't add the endpoint.") 
+        session.close()
+        raise ValueError(f"Either organization name or organization id must be provided. Can't add the endpoint.") 
     
     if organization is None: 
-            raise ValueError(f"Could not find organization with id {org_id} or name {org_name}.")
+        session.close()
+        raise ValueError(f"Could not find organization with id {org_id} or name {org_name}.")
     
     endpoint = Endpoint(name=name)
 
@@ -35,22 +37,27 @@ def create_endpoint(name: str, org_id: int, org_name: str):
     return res 
 
 
-def update_endpoint(id: int, new_name: str):
+def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
     '''
     Update an existing endpoint.
     @param id: ID of the endpoint in the DB
     @param name: New name for the endpoint
     '''
+    if not any([new_name, org_id, new_org]):
+        raise ValueError("At least one of 'new_name', 'org_id', or 'new_org' must be provided in the payload.")
+    
     session=get_db_session()
     
     endpoint = session.query(Endpoint).filter_by(id=id).first()
     
     if endpoint is None:
+        session.close()
         raise ValueError(f"endpoint with id #{id} wasn't found.")
     
     ep_by_name = session.query(endpoint).filter_by(name=new_name).first()
     
     if ep_by_name is not None:
+        session.close()
         raise ValueError(f"endpoint '{new_name}' already exists.")
     
     endpoint.name = new_name
@@ -73,6 +80,7 @@ def delete_endpoint(id: int):
     endpoint = session.query(Endpoint).filter_by(id=id).first()
     
     if endpoint is None:
+        session.close()
         raise ValueError(f"No endpoint with id #{id} was found")
     
     session.delete(endpoint)

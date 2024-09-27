@@ -31,11 +31,13 @@ def update_organization(id: int, new_name: str):
     organization = session.query(Organization).filter_by(id=id).first()
     
     if organization is None:
+        session.close()
         raise ValueError(f"Organization with id #{id} wasn't found.")
     
     org_by_name = session.query(Organization).filter_by(name=new_name).first()
     
     if org_by_name is not None:
+        session.close()
         raise ValueError(f"Organization '{new_name}' already exists.")
     
     organization.name = new_name
@@ -58,6 +60,7 @@ def delete_organization(id: int):
     organization = session.query(Organization).filter_by(id=id).first()
     
     if organization is None:
+        session.close()
         raise ValueError(f"No organization with id #{id} was found")
     
     session.delete(organization)
