@@ -21,7 +21,7 @@ def add_user():
             # Handle missing 'name' key in the request payload.
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'msg': str(e)}), 500
+            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
 
@@ -35,18 +35,17 @@ def update_or_delete_user(id: int):
             # Allowing the 'name' to be optional in case we want to update the endpoint only.
             user_name = data.get('name')
             
-            # Get 'ep_id' and 'ep_name', allowing either to be optional
+            # Get 'ep_id', allowing to be optional
             ep_id = data.get('ep_id')
-            ep_name = data.get('ep_name')
 
-            user = update_user(id, user_name, ep_id, ep_name)
+            user = update_user(id, user_name, ep_id)
             
             return jsonify({"message": "user updated successfully", "user": user})    
                  
         except KeyError:
             return jsonify({'error': 'Some fields in the payload are missing'}), 400
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.'}), 500
+            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
@@ -57,7 +56,7 @@ def update_or_delete_user(id: int):
             return jsonify({"message": "user deleted successfully", "user": user}) 
         
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.'}), 500
+            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500        
 
@@ -69,7 +68,7 @@ def get_endpoint(id):
         return jsonify(endpoint)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.'}), 500
+        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500      
 
@@ -81,6 +80,6 @@ def get_organization(id):
         return jsonify(organization)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.'}), 500
+        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  

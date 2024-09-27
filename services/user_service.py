@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 def get_endpoint_by_user_id(id: int, parent_session: Session = None):
     '''
     Find user's registered endpoint by user id.
-    @param id: the user id  
+    @param id: the user id   
+    @paran parent_session: Session instance from parent function
     '''
     if not parent_session:
         session = get_db_session()
@@ -31,7 +32,7 @@ def get_endpoint_by_user_id(id: int, parent_session: Session = None):
 def get_organization_by_user_id(id: int):
     '''
     Find user's registered organiztion by user id.
-    @param id: the user id  
+    @param id: the user id 
     '''
     session = get_db_session()
     
@@ -46,31 +47,21 @@ def get_organization_by_user_id(id: int):
     return res 
 
 
-def create_user(name: str, ep_id: int, ep_name: str):
+def create_user(name: str, ep_id: int):
     '''
     Create a new user.
-    @param name: Name of the new user
-    @param ep_id: ID of the Endpoint
-    @param ep_name: Name of the Endpoint
+    @param name: Name of the new user 
+    @param ep_id: ID of the Endpoint 
     '''
     session=get_db_session()
     
-    #Trying to find the endpoint by id, then by name. If none of them provided, raise an exception.
-    if ep_id is not None:
-        endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
-    elif ep_name is not None:
-        endpoint = session.query(Endpoint).filter_by(name=ep_name).first()
-    else:
-        session.close()
-        raise ValueError(f"Either endpoint name or endpoint id must be provided. Can't add the user.") 
-    
+    endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
+
     if endpoint is None: 
         session.close()
         if ep_id:
             raise ValueError(f"Could not find endpoint with id {ep_id}.")
-        elif ep_name:
-            raise ValueError(f"Could not find endpoint with name {ep_name}.")
-        
+
     user = User(name=name)
 
     endpoint.users.append(user)
@@ -84,16 +75,15 @@ def create_user(name: str, ep_id: int, ep_name: str):
     
     return res 
 
-def update_user(id: int, new_name: str, ep_id: int, new_ep: str):
+def update_user(id: int, new_name: str, ep_id: int):
     '''
     Update an existing user.
-    @param id: ID of the user in the DB
-    @param name: New name for the user
-    @param org_id: ID of the endpoint we want to update
-    @param new_org: Name of the endpoint we want to update 
+    @param id: ID of the user in the DB 
+    @param name: New name for the user 
+    @param ep_id: ID of the endpoint we want to update 
     '''
-    if not any([new_name, ep_id, new_ep]):
-        raise ValueError("At least one of 'new_name', 'ep_id', or 'new_ep' must be provided in the payload.")
+    if not any([new_name, ep_id]):
+        raise ValueError("At least one of 'new_name', or 'ep_id' must be provided in the payload.")
     
     session=get_db_session()
     
@@ -113,22 +103,17 @@ def update_user(id: int, new_name: str, ep_id: int, new_ep: str):
         user.name = new_name
 
     # Update endpoint's organization
-    if ep_id or new_ep:
-        endpoint = None
-        if ep_id:
-            endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
-        elif new_ep:
-            endpoint = session.query(Endpoint).filter_by(name=new_ep).first()
+    endpoint = None
+    if ep_id:
+        endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
 
         if endpoint is None:
             session.close()
-            if ep_id:
-                raise ValueError(f"Could not find endpoint with id {ep_id}.")
-            elif new_ep:
-                raise ValueError(f"Could not find endpoint with name {new_ep}.")
+            raise ValueError(f"Could not find endpoint with id {ep_id}.")
         
         user.endpoint_id = endpoint.id
     else:
+        #Else condition set to make sure the same endpoint isn't searched twice
         endpoint = session.query(Endpoint).filter_by(id=user.endpoint_id).first()
 
     session.commit()

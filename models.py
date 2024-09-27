@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, Mapped, mapped_column, declarative_base
 from typing import List
 
@@ -15,9 +15,13 @@ class Endpoint(Base):
     __tablename__ = "endpoints"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False)
     organization_id: Mapped[int] = mapped_column(ForeignKey('organizations.id', ondelete='CASCADE'))
     users: Mapped[List['User']] = relationship(backref='endpoint', cascade="all, delete-orphan")
+    
+    # Allows the same name to exist in multiple organizations, but it prevents duplicate endpoint names within the same organization.
+    __table_args__ = (UniqueConstraint('name', 'organization_id', name='uq_name_organization'),)
+
     
 class User(Base):
     __tablename__ = "users"

@@ -22,7 +22,7 @@ def add_endpoint():
             # Handle missing 'name' key in the request payload.
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.'}), 500
+            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
         
@@ -35,7 +35,6 @@ def update_or_delete_endpoint(id: int):
             
             # Allowing the 'name' to be optional in case we want to update the org only.
             ep_name = data.get('name')
-            print(ep_name)
             
             # Get 'org_id' and 'org_name', allowing either to be optional
             org_id = data.get('org_id')
@@ -48,7 +47,7 @@ def update_or_delete_endpoint(id: int):
         except KeyError:
             return jsonify({'error': 'Some fields in the payload are missing'}), 400
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.'}), 500
+            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
@@ -59,6 +58,6 @@ def update_or_delete_endpoint(id: int):
             return jsonify({"message": "Endpoint deleted successfully", "endpoint": endpoint}) 
         
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.' + str(e)}), 500
+            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 
