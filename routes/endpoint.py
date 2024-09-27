@@ -25,3 +25,32 @@ def add_endpoint():
             return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
+        
+@ep_bp.route('/<int:id>', methods=['PUT', 'DELETE'])
+def update_or_delete_endpoint(id: int):
+    if request.method == 'PUT':
+        try:
+            data = request.get_json()
+
+            endpoint = update_endpoint(id, data['name'])
+            
+            return jsonify({"message": "Endpoint updated successfully", "endpoint": endpoint})    
+                 
+        except KeyError:
+            # Handle missing 'name' in the request payload
+            return jsonify({'error': 'The "name" field is required.'}), 400
+        except SQLAlchemyError as e:
+            return jsonify({'error': 'Database error occurred.'}), 500
+        except Exception as e:
+            return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
+
+    elif request.method == 'DELETE':
+        try:
+            endpoint = delete_endpoint(id)
+            
+            return jsonify({"message": "Endpoint deleted successfully", "endpoint": endpoint}) 
+        
+        except SQLAlchemyError as e:
+            return jsonify({'error': 'Database error occurred.'}), 500
+        except Exception as e:
+            return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 
