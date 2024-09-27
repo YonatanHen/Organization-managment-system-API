@@ -33,9 +33,9 @@ def update_organization(id: int, new_name: str):
     if organization is None:
         raise ValueError(f"Organization with id #{id} wasn't found.")
     
-    org_name = session.query(Organization).filter_by(name=new_name).first()
+    org_by_name = session.query(Organization).filter_by(name=new_name).first()
     
-    if org_name is not None:
+    if org_by_name is not None:
         raise ValueError(f"Organization '{new_name}' already exists.")
     
     organization.name = new_name
