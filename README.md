@@ -8,6 +8,33 @@ This organization management system is a web application designed to facilitate 
 - PostgreSQL DB
 - Docker
 
+## Installation & Setup Instructions
+Installation and setup scripts were created under the `shell` folder in this project.
+
+### Create The Virtual Environment
+Run the `shell/create_venv.sh` shell script to create a virtual environment called task-env, and install the application's dependencies listed in the `requirements.txt` file:
+- blinker==1.8.2
+- click==8.1.7
+- colorama==0.4.6
+- Flask==3.0.3
+- greenlet==3.1.1
+- itsdangerous==2.2.0
+- Jinja2==3.1.4
+- MarkupSafe==2.1.5
+- psycopg2==2.9.9
+- SQLAlchemy==2.0.35
+- typing_extensions==4.12.2
+- Werkzeug==3.0.4
+
+### DB Setup
+Please make sure the Docker Desktop is running, then run the `shell/db_setup.sh` shell script to create a Docker volume and a container running PSQL DB, exposed to port `5432`.
+
+### Rerun Virtual Environment and DB
+Simply run the `shell/start_venv.sh` script.
+
+### Run Server
+Simply run the `shell/start.sh` script which runs the Flask API server on localhost over port `5000`.
+
 ## API Documentation
 ### Base URL
 
