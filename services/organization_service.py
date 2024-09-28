@@ -1,27 +1,37 @@
-from models import Organization, Endpoint
+from models import Organization, Endpoint, User
+from sqlalchemy.orm import Session
 from utils.create_sesssion import get_db_session
-
-def get_endpoint_from_organization(ep_id: int, org_id: int):
+    
+def get_endpoint_from_organization(ep_id: int, org_id: int, parent_session: Session = None):
     '''
     Find an endpoint who assigned to given organization.
     
     @param ep_id: the endpoint ID
     @param org_id: the organization ID
-    
-    :returns: endpoint JSON
+    @param parent_session: Session instance from the parent function, if provided
+
+    :returns: endpoint object in JSON format
     
     :raises: ValueError: if endpoint ID was not found in the organization.
     '''
-    session = get_db_session()
+    if not parent_session:
+        session = get_db_session()
+    else:
+        session = parent_session
+        
     endpoint = session.query(Endpoint).filter(Endpoint.id==ep_id, Endpoint.organization_id==org_id).first()
     
     if endpoint is None:
         session.close()
-        raise ValueError(f"No endpoint with id #{ep_id} in organization #{org_id} was found or not exists.")
+        if parent_session:
+            raise ValueError(f"User's endpoint (id #{ep_id}) in organization #{org_id} was found.")
+        else:
+            raise ValueError(f"No endpoint with id #{ep_id} in organization #{org_id} was found or not exists.")
     
     res = {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}
     
-    session.close()
+    if not parent_session:
+        session.close()
     
     return res 
 
@@ -46,6 +56,37 @@ def get_endpoints_list_from_organization(org_id: int):
     res = []
     for endpoint in endpoints_list:
         res.append({"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id})
+    
+    session.close()
+    
+    return res 
+
+
+def get_user_from_organization(user_id: int, org_id: int):
+    '''
+    Find an user who assigned to given organization.
+    
+    @param user_id: the user ID
+    @param org_id: the organization ID
+    
+    :returns: endpoint object in JSON format
+    
+    :raises: ValueError: if organization ID was not found in the endpoint that assigned to the given user (ID).
+    '''
+    session = get_db_session()
+    user = session.query(User).filter_by(id=user_id).first()
+    
+    if user is None:
+        session.close()
+        raise ValueError(f"No user with id #{user_id} was found")
+    
+    endpoint=get_endpoint_from_organization(user.endpoint_id, org_id, session)
+    
+    if endpoint['organization_id']!=org_id:
+        session.close()
+        raise ValueError(f"No user with id #{user_id} in organization #{org_id} was found.")
+    
+    res = {"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint['organization_id']}
     
     session.close()
     
