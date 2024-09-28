@@ -1,13 +1,9 @@
-
-## Overview
-
-This API allows for the management of users, endpoints, and organizations. The API is built using Flask and SQLAlchemy, providing endpoints for creating, updating, deleting, and retrieving information about users, endpoints, and organizations.
-
-## Base URL
+## API Documentation
+### Base URL
 
 `http://localhost:5000`
 
-## API Documentation
+### APIs
 
 | API Name                             | Method  | Endpoint                                 | Response                                               | Description                                   |
 |--------------------------------------|---------|------------------------------------------|--------------------------------------------------------|-----------------------------------------------|
@@ -29,13 +25,9 @@ This API allows for the management of users, endpoints, and organizations. The A
 | Get Endpoint from Organization       | GET     | `/organization/<organization_id>/endpoint/<endpoint_id>` | `{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}` | Retrieve an endpoint associated with an organization. |
 | Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | `[{"id": endpoint.id, "name": endpoint.name}, ...]`  | Retrieve all endpoints associated with an organization. |
 
-## Error Handling
+### Error Handling
 
 All endpoints handle and return appropriate error messages and HTTP status codes in case of some errors. The error responses generally include the following:
 - `400`: Bad Request.
 - `404`: Resource or endpoint not found.
 - `500`: Internal Server Error or DB-related Error.
-
-## Conclusion
-
-This API provides a comprehensive way to manage users, endpoints, and organizations in your application. For any questions or contributions, feel free to raise an issue or submit a pull request!
