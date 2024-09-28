@@ -6,9 +6,7 @@ This API allows for the management of users, endpoints, and organizations. The A
 
 ## Base URL
 
-http://localhost:5000
-
-## APIs
+'''http://localhost:5000'''
 
 ## APIs
 
