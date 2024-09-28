@@ -68,7 +68,7 @@ def get_user_organization(org_id, user_id):
 @org_bp.route('/<int:id>/users', methods=['GET'])
 def get_users_organization(id):
     try:
-        endpoints = get_endpoints_list_from_organization(id)
+        endpoints = get_users_list_from_organization(id)
         
         return jsonify(endpoints)
     

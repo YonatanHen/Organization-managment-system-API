@@ -1,6 +1,7 @@
 from models import Organization, Endpoint, User
 from sqlalchemy.orm import Session
 from utils.create_sesssion import get_db_session
+from services.endpoint_service import get_users_list_from_endpoint
     
 def get_endpoint_from_organization(ep_id: int, org_id: int, parent_session: Session = None):
     '''
@@ -24,7 +25,7 @@ def get_endpoint_from_organization(ep_id: int, org_id: int, parent_session: Sess
     if endpoint is None:
         session.close()
         if parent_session:
-            raise ValueError(f"User's endpoint (id #{ep_id}) in organization #{org_id} was found.")
+            raise ValueError(f"User's endpoint (id #{ep_id}) in organization #{org_id} was not found.")
         else:
             raise ValueError(f"No endpoint with id #{ep_id} in organization #{org_id} was found or not exists.")
     
@@ -36,17 +37,22 @@ def get_endpoint_from_organization(ep_id: int, org_id: int, parent_session: Sess
     return res 
 
 
-def get_endpoints_list_from_organization(org_id: int):
+def get_endpoints_list_from_organization(org_id: int, parent_session: Session = None):
     '''
     Find all endpoints who assigned to given organization.
     
     @param org_id: the organization ID
-    
+    @param parent_session: Session instance from the parent function, if provided
+
     :returns: List of endpoints objects in JSON format
     
     :raises: ValueError: if no such organization exists
     '''
-    session = get_db_session()
+    if not parent_session:
+        session = get_db_session()
+    else: 
+        session=parent_session
+    
     endpoints_list = session.query(Endpoint).filter_by(organization_id=org_id).all()
     
     if len(endpoints_list)==0:
@@ -57,7 +63,8 @@ def get_endpoints_list_from_organization(org_id: int):
     for endpoint in endpoints_list:
         res.append({"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id})
     
-    session.close()
+    if not parent_session:
+        session.close()
     
     return res 
 
@@ -71,7 +78,7 @@ def get_user_from_organization(user_id: int, org_id: int):
     
     :returns: endpoint object in JSON format
     
-    :raises: ValueError: if organization ID was not found in the endpoint that assigned to the given user (ID).
+    :raises: ValueError: if organization or user ID was not found, or if organization ID was not found in the endpoint that assigned to the given user (ID).
     '''
     session = get_db_session()
     user = session.query(User).filter_by(id=user_id).first()
@@ -80,6 +87,13 @@ def get_user_from_organization(user_id: int, org_id: int):
         session.close()
         raise ValueError(f"No user with id #{user_id} was found")
     
+    organization = session.query(Organization).filter_by(id=org_id).first()
+    
+    if organization is None:
+        session.close()
+        raise ValueError(f"No organization with id #{org_id} was found")
+    
+    #Every user assigned to single endpoint, and the endpoint assigned to a single organization.
     endpoint=get_endpoint_from_organization(user.endpoint_id, org_id, session)
     
     if endpoint['organization_id']!=org_id:
@@ -89,6 +103,33 @@ def get_user_from_organization(user_id: int, org_id: int):
     res = {"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint['organization_id']}
     
     session.close()
+    
+    return res 
+
+
+def get_users_list_from_organization(org_id: int):
+    '''
+    Find all users who assigned to given organization.
+    
+    @param org_id: the organization ID
+    
+    :returns: List of endpoints objects in JSON format
+    
+    :raises: ValueError: if no such organization exists
+    '''
+    session = get_db_session()
+    
+    organization = session.query(Organization).filter_by(id=org_id).first()
+    
+    if organization is None:
+        session.close()
+        raise ValueError(f"No organization with id #{org_id} was found")
+    
+    endpoints = get_endpoints_list_from_organization(org_id, session)
+    
+    res = []
+    for endpoint in endpoints:
+        res.extend(get_users_list_from_endpoint(endpoint['id'], session))
     
     return res 
 

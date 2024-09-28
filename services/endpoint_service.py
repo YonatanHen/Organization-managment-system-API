@@ -1,4 +1,5 @@
 from models import Endpoint, Organization, User
+from sqlalchemy.orm import Session
 from utils.create_sesssion import get_db_session
 
 def get_user_from_endpoint(user_id: int, ep_id: int):
@@ -28,20 +29,29 @@ def get_user_from_endpoint(user_id: int, ep_id: int):
     return res 
 
 
-def get_users_list_from_endpoint(ep_id: int):
+def get_users_list_from_endpoint(ep_id: int, parent_session: Session = None):
     '''
     Find all user who assigned to given endpoint.
     
     @param ep_id: the endpoint ID
+    @param parent_session: Session instance from the parent function, if provided
     
     :returns: List of user objects in JSON format
     
     :raises: ValueError: if no such endpoint exists
     '''
-    session = get_db_session()
+    if not parent_session:
+        session = get_db_session()
+    else: 
+        session=parent_session
+    
     users_list = session.query(User).filter_by(endpoint_id=ep_id).all()
     
     if len(users_list)==0:
+        #Don't raise an exception in case we call this function from the parent function since we need to look for multiple endpoints assigned to the organization (and not necessarily assigned to a user)
+        if parent_session:
+            return []
+        
         session.close()
         raise ValueError(f"Endpoint #{ep_id} is not exists or not assigned to any user.")
     
@@ -54,7 +64,8 @@ def get_users_list_from_endpoint(ep_id: int):
             
         res.append({"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": ep_to_org[user.endpoint_id]})
     
-    session.close()
+    if not parent_session:
+        session.close()
     
     return res 
 
