@@ -10,8 +10,6 @@ This API allows for the management of users, endpoints, and organizations. The A
 
 ## APIs
 
-## APIs
-
 | API Name                             | Method  | Endpoint                                 | Response                                               | Description                                   |
 |--------------------------------------|---------|------------------------------------------|--------------------------------------------------------|-----------------------------------------------|
 | Add User                             | POST    | `/user/`                                 | `{"message": "User added successfully", "user": {"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id}}` | Create a new user.                           |
