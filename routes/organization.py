@@ -18,7 +18,7 @@ def add_organization():
             # Handle missing 'name' in the request payload
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
           
@@ -37,7 +37,7 @@ def update_or_delete_organization(id: int):
             # Handle missing 'name' in the request payload
             return jsonify({'error': 'The "name" field is required.'}), 400
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
@@ -48,7 +48,7 @@ def update_or_delete_organization(id: int):
             return jsonify({"message": "Organization deleted successfully", "organization": organization}) 
         
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
 
@@ -60,7 +60,7 @@ def get_user_organization(org_id, user_id):
         return jsonify(user)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  
     
@@ -73,7 +73,7 @@ def get_users_organization(id):
         return jsonify(users)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
         
@@ -85,7 +85,7 @@ def get_endpoint_organization(org_id, ep_id):
         return jsonify(endpoint)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  
     
@@ -98,6 +98,6 @@ def get_endpoints_organization(id):
         return jsonify(endpoints)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 

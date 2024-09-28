@@ -22,7 +22,7 @@ def add_endpoint():
             # Handle missing 'name' key in the request payload.
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
         
@@ -47,7 +47,7 @@ def update_or_delete_endpoint(id: int):
         except KeyError:
             return jsonify({'error': 'Some fields in the payload are missing'}), 400
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
@@ -58,7 +58,7 @@ def update_or_delete_endpoint(id: int):
             return jsonify({"message": "Endpoint deleted successfully", "endpoint": endpoint}) 
         
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 
         
@@ -71,7 +71,7 @@ def get_user_endpoint(ep_id, user_id):
         return jsonify(user)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  
     
@@ -84,6 +84,6 @@ def get_users_endpoint(id):
         return jsonify(users)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 
