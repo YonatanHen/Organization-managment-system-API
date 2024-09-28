@@ -55,9 +55,9 @@ def update_or_delete_organization(id: int):
 @org_bp.route('/<int:org_id>/user/<int:user_id>', methods=['GET'])
 def get_user_organization(org_id, user_id):
     try:
-        endpoint = get_user_from_organization(user_id, org_id)
+        user = get_user_from_organization(user_id, org_id)
         
-        return jsonify(endpoint)
+        return jsonify(user)
     
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
@@ -68,9 +68,9 @@ def get_user_organization(org_id, user_id):
 @org_bp.route('/<int:id>/users', methods=['GET'])
 def get_users_organization(id):
     try:
-        endpoints = get_users_list_from_organization(id)
+        users = get_users_list_from_organization(id)
         
-        return jsonify(endpoints)
+        return jsonify(users)
     
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
