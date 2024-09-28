@@ -29,21 +29,17 @@ def get_endpoint_from_organization(ep_id: int, org_id: int):
     return res 
 
 
-def get_endpoints_list_from_organization(org_id: int, parent_session: Session = None):
+def get_endpoints_list_from_organization(org_id: int):
     '''
     Find all endpoints who assigned to given organization.
     
     @param org_id: the organization ID
-    @param parent_session: Session instance from the parent function, if provided
 
     :returns: List of endpoints objects in JSON format
     
     :raises: ValueError: if no such organization exists
     '''
-    if not parent_session:
-        session = get_db_session()
-    else: 
-        session=parent_session
+    session = get_db_session()
     
     endpoints_list = session.query(Endpoint).filter_by(organization_id=org_id).all()
     
@@ -55,8 +51,7 @@ def get_endpoints_list_from_organization(org_id: int, parent_session: Session = 
     for endpoint in endpoints_list:
         res.append({"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id})
     
-    if not parent_session:
-        session.close()
+    session.close()
     
     return res 
 
@@ -99,18 +94,23 @@ def get_users_list_from_organization(org_id: int):
     :raises: ValueError: if no such organization exists
     '''
     session = get_db_session()
+    query_results = session.query(User, Endpoint).join(Endpoint).filter(Endpoint.organization_id==org_id).all()
     
-    organization = session.query(Organization).filter_by(id=org_id).first()
-    
-    if organization is None:
+    if len(query_results)==0:
         session.close()
-        raise ValueError(f"No organization with id #{org_id} was found")
-    
-    endpoints = get_endpoints_list_from_organization(org_id, session)
-    
-    res = []
-    for endpoint in endpoints:
-        res.extend(get_users_list_from_endpoint(endpoint['id'], session))
+        raise ValueError(f"No users in organization #{org_id} were found.")
+        
+    res=[]
+    for user, endpoint in query_results:
+        user_info = {
+            "id": user.id,
+            "name": user.name,
+            "endpoint_id": user.endpoint_id,
+            "organization_id": endpoint.organization_id
+        }
+        res.append(user_info)
+
+    session.close()
     
     return res 
 
