@@ -18,7 +18,9 @@ def add_user():
             # Handle missing 'name' key in the request payload.
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
 
@@ -42,7 +44,9 @@ def update_or_delete_user(id: int):
         except KeyError:
             return jsonify({'error': 'Some fields in the payload are missing'}), 400
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
@@ -53,7 +57,9 @@ def update_or_delete_user(id: int):
             return jsonify({"message": "user deleted successfully", "user": user}) 
         
         except SQLAlchemyError as e:
-            return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
+            return jsonify({'error': 'Database error occurred.'}), 500
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500         
     
@@ -67,8 +73,10 @@ def get_endpoint(id):
     
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
+    except ValueError as e:
+            return jsonify({'error': str(e)}), 404
     except Exception as e:
-        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500      
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
 
 
 @user_bp.route('/<int:id>/organization', methods=['GET'])
@@ -79,6 +87,8 @@ def get_organization(id):
         return jsonify(organization)
     
     except SQLAlchemyError as e:
-        return jsonify({'error': 'Database error occurred.', 'message': str(e)}), 500
+        return jsonify({'error': 'Database error occurred.'}), 500
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 404
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  

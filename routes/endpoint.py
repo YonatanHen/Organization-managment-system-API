@@ -23,6 +23,8 @@ def add_endpoint():
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
         
@@ -48,6 +50,8 @@ def update_or_delete_endpoint(id: int):
             return jsonify({'error': 'Some fields in the payload are missing'}), 400
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
@@ -59,6 +63,8 @@ def update_or_delete_endpoint(id: int):
         
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 
         
@@ -72,6 +78,8 @@ def get_user_endpoint(ep_id, user_id):
     
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.'}), 500
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 404
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  
     
@@ -85,5 +93,7 @@ def get_users_endpoint(id):
     
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.'}), 500
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 404
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 

@@ -121,7 +121,7 @@ def update_user(id: int, new_name: str, ep_id: int):
         user_by_name = session.query(User).filter_by(name=new_name).first()
         if user_by_name is not None:
             session.close()
-            raise ValueError(f"User '{new_name}' already exists.")
+            raise Exception(f"User '{new_name}' already exists.")
     
         user.name = new_name
 
