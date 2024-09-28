@@ -34,8 +34,9 @@ This API allows for the management of users, endpoints, and organizations. The A
 
 ## Error Handling
 
-All endpoints handle and return appropriate error messages and HTTP status codes in case of errors. The error responses generally include the following:
+All endpoints handle and return appropriate error messages and HTTP status codes in case of some errors. The error responses generally include the following:
 - `400`: Bad Request.
+- `404`: Resource or endpoint not found.
 - `500`: Internal Server Error or DB-related Error.
 
 ## Conclusion
