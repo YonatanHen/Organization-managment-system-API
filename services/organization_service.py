@@ -1,6 +1,5 @@
 from models import Organization, Endpoint, User
-from sqlalchemy.orm import Session
-from utils.create_sesssion import get_db_session
+from utils.create_session import get_db_session
     
 def get_endpoint_from_organization(ep_id: int, org_id: int):
     '''

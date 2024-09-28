@@ -1,6 +1,5 @@
 from models import User, Endpoint, Organization
-from utils.create_sesssion import get_db_session
-from sqlalchemy.orm import Session
+from utils.create_session import get_db_session
 
 def get_endpoint_by_user_id(user_id: int):
     '''
