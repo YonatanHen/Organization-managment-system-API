@@ -25,7 +25,7 @@ http://localhost:5000
 | `/organization/`                         | POST    | `{"message": "Organization added successfully", "organization": {"id": organization.id, "name": organization.name}}`
 | `/organization/<organization_id>`                 | PUT     | `{"message": "Organization updated successfully", "organization": {"id": organization.id, "name": organization.name}}`
 | `/organization/<organization_id>`                 | DELETE  | `{"message": "Organization deleted successfully", "organization": {"id": organization.id, "name": organization.name}}`
-| `/organization/<organization_id>/user/<int:user_id>` | GET | `{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id }`
+| `/organization/<organization_id>/user/<user_id>` | GET | `{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id }`
 | `/organization/<organization_id>/users`           | GET     | `[{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id }, ...]`
 | `/organization/<organization_id>/endpoint/<endpoint_id>` | GET | `{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}`
 | `/organization/<organization_id>/endpoints`       | GET     | `[{"id": endpoint.id, "name": endpoint.name}, ...]`
