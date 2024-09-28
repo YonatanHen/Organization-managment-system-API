@@ -1,5 +1,66 @@
-from models import Endpoint, Organization
+from models import Endpoint, Organization, User
 from utils.create_sesssion import get_db_session
+
+def get_user_from_endpoint(user_id: int, ep_id: int):
+    '''
+    Find a user who assigned to given endpoint.
+    
+    @param user_id: the user id
+    @param ep_id: the endpoint id
+    
+    @return: user JSON
+    
+    @raises: ValueError: if user id was not found in the endpoint.
+    
+    '''
+    session = get_db_session()
+    user = session.query(User).filter(User.endpoint_id==ep_id, User.id==user_id).first()
+    
+    if user is None:
+        session.close()
+        raise ValueError(f"No user with id #{user_id} in endpoint #{ep_id} was found or not exists.")
+
+    endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
+    
+    res = {"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id }
+    
+    session.close()
+    
+    return res 
+
+
+def get_users_list_from_endpoint(ep_id: int):
+    '''
+    Find all user who assigned to given endpoint.
+    
+    @param ep_id: the endpoint id
+    
+    @return: List of user obbjects in JSON format
+    
+    @raises: ValueError: if no such endpoint exists
+    
+    '''
+    session = get_db_session()
+    users_list = session.query(User).filter_by(endpoint_id=ep_id).all()
+    
+    if users_list is None:
+        session.close()
+        raise ValueError(f"Endpoint #{ep_id} is not exists or not assigned to any user.")
+
+    endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
+    
+    res = []
+    ep_to_org={}
+    for user in users_list:
+        if user.endpoint_id not in ep_to_org:
+            endpoint = session.query(Endpoint).filter_by(id=user.endpoint_id).first()
+            ep_to_org[user.endpoint_id] = endpoint.organization_id
+            
+        res.append({"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": ep_to_org[user.endpoint_id]})
+    
+    session.close()
+    
+    return res 
 
 def create_endpoint(name: str, org_id: int, org_name: str):
     '''

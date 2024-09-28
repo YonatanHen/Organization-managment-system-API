@@ -1,6 +1,7 @@
 from flask import jsonify, Blueprint, request
 from sqlalchemy.exc import SQLAlchemyError
 from services.user_service import *
+
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 @user_bp.route('/', methods=['POST'])
@@ -54,7 +55,8 @@ def update_or_delete_user(id: int):
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
-            return jsonify({'error': 'An error occurred', 'message': str(e)}), 500        
+            return jsonify({'error': 'An error occurred', 'message': str(e)}), 500         
+    
 
 @user_bp.route('/<int:id>/endpoint', methods=['GET'])
 def get_endpoint(id):
@@ -67,6 +69,7 @@ def get_endpoint(id):
         return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
     except Exception as e:
         return jsonify({'error': 'An error occurred', 'message': str(e)}), 500      
+
 
 @user_bp.route('/<int:id>/organization', methods=['GET'])
 def get_organization(id):

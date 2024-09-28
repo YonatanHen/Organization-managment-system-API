@@ -61,3 +61,29 @@ def update_or_delete_endpoint(id: int):
             return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 
+        
+
+@ep_bp.route('/<int:ep_id>/user/<int:user_id>', methods=['GET'])
+def get_user_endpoint(ep_id, user_id):
+    try:
+        user = get_user_from_endpoint(user_id,ep_id)
+        
+        return jsonify(user)
+    
+    except SQLAlchemyError as e:
+        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+    except Exception as e:
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  
+    
+
+@ep_bp.route('/<int:id>/users', methods=['GET'])
+def get_users_endpoint(id):
+    try:
+        user = get_users_list_from_endpoint(id)
+        
+        return jsonify(user)
+    
+    except SQLAlchemyError as e:
+        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+    except Exception as e:
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 

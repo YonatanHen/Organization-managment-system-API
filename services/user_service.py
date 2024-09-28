@@ -5,8 +5,9 @@ from sqlalchemy.orm import Session
 def get_endpoint_by_user_id(id: int, parent_session: Session = None):
     '''
     Find user's registered endpoint by user id.
+    
     @param id: the user id   
-    @paran parent_session: Session instance from parent function
+    @param parent_session: Session instance from parent function
     '''
     if not parent_session:
         session = get_db_session()
