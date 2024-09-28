@@ -13,9 +13,11 @@ Installation and setup scripts were created under the `shell` folder in this pro
 
 ### Create The Virtual Environment
 First, create a .env file with the following content:
-`PSQL_USERNAME='username'`
-`PSQL_PASSWORD='password'`
-`PSQL_URL='localhost:5432/db_name'`
+
+```plaintext
+PSQL_USERNAME='postgres'
+PSQL_PASSWORD='password'
+PSQL_URL='localhost:5432/postgres'
 
 For example (based on the credentials and URL in the `db_setup.sh`): 
 `PSQL_USERNAME='postgres'
