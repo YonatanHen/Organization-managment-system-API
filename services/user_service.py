@@ -6,8 +6,12 @@ def get_endpoint_by_user_id(id: int, parent_session: Session = None):
     '''
     Find user's registered endpoint by user id.
     
-    @param id: the user id   
-    @param parent_session: Session instance from parent function
+    @param id: The user ID   
+    @param parent_session: Session instance from the parent function, if provided
+    
+    :returns: The endpoint JSON object
+    
+    :raises: ValueError: If the given user ID is not found
     '''
     if not parent_session:
         session = get_db_session()
@@ -32,8 +36,13 @@ def get_endpoint_by_user_id(id: int, parent_session: Session = None):
 
 def get_organization_by_user_id(id: int):
     '''
-    Find user's registered organiztion by user id.
-    @param id: the user id 
+    Find user's registered organization by user id.
+    
+    @param id: The user ID 
+    
+    :returns: The organization JSON object
+    
+    :raises: ValueError: If the given user ID or endpoint's organization is not found
     '''
     session = get_db_session()
     
@@ -51,8 +60,13 @@ def get_organization_by_user_id(id: int):
 def create_user(name: str, ep_id: int):
     '''
     Create a new user.
-    @param name: Name of the new user 
-    @param ep_id: ID of the Endpoint 
+    
+    @param name: The name of the new user 
+    @param ep_id: The ID of the endpoint
+    
+    :returns: The created user JSON object
+    
+    :raises: ValueError: If the given endpoint ID is not found
     '''
     session=get_db_session()
     
@@ -79,9 +93,14 @@ def create_user(name: str, ep_id: int):
 def update_user(id: int, new_name: str, ep_id: int):
     '''
     Update an existing user.
-    @param id: ID of the user in the DB 
-    @param name: New name for the user 
-    @param ep_id: ID of the endpoint we want to update 
+    
+    @param id: The ID of the user in the DB 
+    @param new_name: The new name for the user 
+    @param ep_id: The ID of the endpoint we want to update 
+    
+    :returns: The updated user JSON object
+    
+    :raises: ValueError: If the user or endpoint with the provided ID is not found, or if the new user name already exists
     '''
     if not any([new_name, ep_id]):
         raise ValueError("At least one of 'new_name', or 'ep_id' must be provided in the payload.")
@@ -129,7 +148,12 @@ def update_user(id: int, new_name: str, ep_id: int):
 def delete_user(id: int):
     '''
     Delete a user.
-    @param id: ID of the user in the DB
+    
+    @param id: The ID of the user in the DB
+    
+    :returns: The deleted user JSON object
+    
+    :raises: ValueError: If the user with the given ID is not found
     '''
     session=get_db_session()
     

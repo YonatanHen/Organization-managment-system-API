@@ -5,12 +5,12 @@ def get_user_from_endpoint(user_id: int, ep_id: int):
     '''
     Find a user who assigned to given endpoint.
     
-    @param user_id: the user id
-    @param ep_id: the endpoint id
+    @param user_id: the user ID
+    @param ep_id: the endpoint ID
     
-    @return: user JSON
+    :returns: user JSON
     
-    @raises: ValueError: if user id was not found in the endpoint.
+    :raises: ValueError: if user ID was not found in the endpoint.
     '''
     session = get_db_session()
     user = session.query(User).filter(User.endpoint_id==ep_id, User.id==user_id).first()
@@ -32,11 +32,11 @@ def get_users_list_from_endpoint(ep_id: int):
     '''
     Find all user who assigned to given endpoint.
     
-    @param ep_id: the endpoint id
+    @param ep_id: the endpoint ID
     
-    @return: List of user obbjects in JSON format
+    :returns: List of user objects in JSON format
     
-    @raises: ValueError: if no such endpoint exists
+    :raises: ValueError: if no such endpoint exists
     '''
     session = get_db_session()
     users_list = session.query(User).filter_by(endpoint_id=ep_id).all()
@@ -61,9 +61,14 @@ def get_users_list_from_endpoint(ep_id: int):
 def create_endpoint(name: str, org_id: int, org_name: str):
     '''
     Create a new endpoint.
+    
     @param name: Name of the new endpoint
     @param org_id: ID of the organization
     @param org_name: Name of the organization
+    
+    :returns: New Endpoint object
+    
+    :raises: ValueError: If the orgnization name/ID not provided or organization could not be found.
     '''
     session=get_db_session()
     
@@ -97,10 +102,15 @@ def create_endpoint(name: str, org_id: int, org_name: str):
 def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
     '''
     Update an existing endpoint.
+    
     @param id: ID of the endpoint in the DB
     @param name: New name for the endpoint
     @param org_id: ID of the organization we want to update
     @param new_org: Name of the organization we want to update
+    
+    :returns: The updated endpoint JSON object
+    
+    :raises: ValueError: if the endpoint wasn't found, or organization ID/name was not found.
     '''
     if not any([new_name, org_id, new_org]):
         raise ValueError("At least one of 'new_name', 'org_id', or 'new_org' must be provided in the payload.")
@@ -146,7 +156,12 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
 def delete_endpoint(id: int):
     '''
     Delete an endpoint.
+    
     @param id: ID of the endpoint in the DB
+    
+    :returns: The deleted endpoint JSON object
+    
+    :raises: ValueError: If the given endpoint ID is not found
     '''
     session=get_db_session()
     

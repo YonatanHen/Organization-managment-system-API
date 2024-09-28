@@ -5,12 +5,12 @@ def get_endpoint_from_organization(ep_id: int, org_id: int):
     '''
     Find an endpoint who assigned to given organization.
     
-    @param ep_id: the endpoint id
-    @param org_id: the organization id
+    @param ep_id: the endpoint ID
+    @param org_id: the organization ID
     
     :returns: endpoint JSON
     
-    :raises: ValueError: if endpoint id was not found in the organization.
+    :raises: ValueError: if endpoint ID was not found in the organization.
     '''
     session = get_db_session()
     endpoint = session.query(Endpoint).filter(Endpoint.id==ep_id, Endpoint.organization_id==org_id).first()
@@ -30,7 +30,7 @@ def get_endpoints_list_from_organization(org_id: int):
     '''
     Find all endpoints who assigned to given organization.
     
-    @param org_id: the organization id
+    @param org_id: the organization ID
     
     :returns: List of endpoints objects in JSON format
     
@@ -58,7 +58,7 @@ def create_organization(name: str):
     
     @param name: Name of the new organization
     
-    :returns: New organization object    
+    :returns: New organization JSON object    
     '''
     session=get_db_session()
     
@@ -117,7 +117,7 @@ def delete_organization(id: int):
     
     :returns: The deleted organization JSON object
     
-    :raises ValueError: If no organization with the given id was found
+    :raises ValueError: If no organization with the given ID was found
     '''
     session=get_db_session()
     
