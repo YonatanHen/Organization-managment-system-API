@@ -12,6 +12,16 @@ This organization management system is a web application designed to facilitate 
 Installation and setup scripts were created under the `shell` folder in this project.
 
 ### Create The Virtual Environment
+First, create a .env file with the following content:
+`PSQL_USERNAME='username'
+PSQL_PASSWORD='password'
+PSQL_URL='localhost:5432/db_name'`
+
+For example (based on the credentials and URL in the `db_setup.sh`): 
+`PSQL_USERNAME='postgres'
+PSQL_PASSWORD='password'
+PSQL_URL='localhost:5432/postgres'`
+
 Run the `shell/create_venv.sh` shell script to create a virtual environment called task-env, and install the application's dependencies listed in the `requirements.txt` file:
 - blinker==1.8.2
 - click==8.1.7
@@ -27,7 +37,7 @@ Run the `shell/create_venv.sh` shell script to create a virtual environment call
 - Werkzeug==3.0.4
 
 ### DB Setup
-Please make sure the Docker Desktop is running, then run the `shell/db_setup.sh` shell script to create a Docker volume and a container running PSQL DB, exposed to port `5432`.
+Please make sure the Docker Desktop is running, then run the `shell/db_setup.sh` shell script to create a Docker volume and a container running PSQL DB, exposed to port `5432` (change the credentials and URL in case they are different from those described in the example above).
 
 ### Rerun Virtual Environment and DB
 Simply run the `shell/start_venv.sh` script.
