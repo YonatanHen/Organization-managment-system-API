@@ -51,3 +51,28 @@ def update_or_delete_organization(id: int):
             return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
+        
+@org_bp.route('/<int:org_id>/endpoint/<int:ep_id>', methods=['GET'])
+def get_endpoint_organization(org_id, ep_id):
+    try:
+        endpoint = get_endpoint_from_organization(ep_id, org_id)
+        
+        return jsonify(endpoint)
+    
+    except SQLAlchemyError as e:
+        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+    except Exception as e:
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500  
+    
+
+@org_bp.route('/<int:id>/endpoints', methods=['GET'])
+def get_endpoints_organization(id):
+    try:
+        endpoints = get_endpoints_list_from_organization(id)
+        
+        return jsonify(endpoints)
+    
+    except SQLAlchemyError as e:
+        return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500
+    except Exception as e:
+        return jsonify({'error': 'An error occurred', 'message': str(e)}), 500 

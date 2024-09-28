@@ -1,5 +1,56 @@
-from models import Organization
+from models import Organization, Endpoint
 from utils.create_sesssion import get_db_session
+
+def get_endpoint_from_organization(ep_id: int, org_id: int):
+    '''
+    Find an endpoint who assigned to given organization.
+    
+    @param ep_id: the endpoint id
+    @param org_id: the organization id
+    
+    @return: endpoint JSON
+    
+    @raises: ValueError: if endpoint id was not found in the organization.
+    '''
+    session = get_db_session()
+    endpoint = session.query(Endpoint).filter(Endpoint.id==ep_id, Endpoint.organization_id==org_id).first()
+    
+    if endpoint is None:
+        session.close()
+        raise ValueError(f"No endpoint with id #{ep_id} in organization #{org_id} was found or not exists.")
+    
+    res = {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}
+    
+    session.close()
+    
+    return res 
+
+
+def get_endpoints_list_from_organization(org_id: int):
+    '''
+    Find all endpoints who assigned to given organization.
+    
+    @param org_id: the organization id
+    
+    @return: List of endpoints objects in JSON format
+    
+    @raises: ValueError: if no such organization exists
+    '''
+    session = get_db_session()
+    endpoints_list = session.query(Endpoint).filter_by(organization_id=org_id).all()
+    
+    if len(endpoints_list)==0:
+        session.close()
+        raise ValueError(f"Organization #{org_id} is not exists or not assigned to any endpoint.")
+    
+    res = []
+    for endpoint in endpoints_list:
+        res.append({"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id})
+    
+    session.close()
+    
+    return res 
+
 
 def create_organization(name: str):
     '''

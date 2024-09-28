@@ -79,9 +79,9 @@ def get_user_endpoint(ep_id, user_id):
 @ep_bp.route('/<int:id>/users', methods=['GET'])
 def get_users_endpoint(id):
     try:
-        user = get_users_list_from_endpoint(id)
+        users = get_users_list_from_endpoint(id)
         
-        return jsonify(user)
+        return jsonify(users)
     
     except SQLAlchemyError as e:
         return jsonify({'error': 'Database error occurred.', 'message': str(e.orig)}), 500

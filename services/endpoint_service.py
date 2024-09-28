@@ -11,7 +11,6 @@ def get_user_from_endpoint(user_id: int, ep_id: int):
     @return: user JSON
     
     @raises: ValueError: if user id was not found in the endpoint.
-    
     '''
     session = get_db_session()
     user = session.query(User).filter(User.endpoint_id==ep_id, User.id==user_id).first()
@@ -38,16 +37,13 @@ def get_users_list_from_endpoint(ep_id: int):
     @return: List of user obbjects in JSON format
     
     @raises: ValueError: if no such endpoint exists
-    
     '''
     session = get_db_session()
     users_list = session.query(User).filter_by(endpoint_id=ep_id).all()
     
-    if users_list is None:
+    if len(users_list)==0:
         session.close()
         raise ValueError(f"Endpoint #{ep_id} is not exists or not assigned to any user.")
-
-    endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
     
     res = []
     ep_to_org={}
