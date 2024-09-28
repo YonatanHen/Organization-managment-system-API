@@ -1,4 +1,3 @@
-# API Documentation
 
 ## Overview
 
@@ -8,7 +7,7 @@ This API allows for the management of users, endpoints, and organizations. The A
 
 `http://localhost:5000`
 
-## APIs
+## API Documentation
 
 | API Name                             | Method  | Endpoint                                 | Response                                               | Description                                   |
 |--------------------------------------|---------|------------------------------------------|--------------------------------------------------------|-----------------------------------------------|
