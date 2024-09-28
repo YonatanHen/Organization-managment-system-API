@@ -8,9 +8,9 @@ def get_endpoint_from_organization(ep_id: int, org_id: int):
     @param ep_id: the endpoint id
     @param org_id: the organization id
     
-    @return: endpoint JSON
+    :returns: endpoint JSON
     
-    @raises: ValueError: if endpoint id was not found in the organization.
+    :raises: ValueError: if endpoint id was not found in the organization.
     '''
     session = get_db_session()
     endpoint = session.query(Endpoint).filter(Endpoint.id==ep_id, Endpoint.organization_id==org_id).first()
@@ -32,9 +32,9 @@ def get_endpoints_list_from_organization(org_id: int):
     
     @param org_id: the organization id
     
-    @return: List of endpoints objects in JSON format
+    :returns: List of endpoints objects in JSON format
     
-    @raises: ValueError: if no such organization exists
+    :raises: ValueError: if no such organization exists
     '''
     session = get_db_session()
     endpoints_list = session.query(Endpoint).filter_by(organization_id=org_id).all()
@@ -55,7 +55,10 @@ def get_endpoints_list_from_organization(org_id: int):
 def create_organization(name: str):
     '''
     Create a new organization
-    @param name: Name of the new organizationre
+    
+    @param name: Name of the new organization
+    
+    :returns: New organization object    
     '''
     session=get_db_session()
     
@@ -74,8 +77,13 @@ def create_organization(name: str):
 def update_organization(id: int, new_name: str):
     '''
     Update the an existing organization.
+    
     @param id: ID of the organization in the DB
     @param name: New name for the organization
+    
+    :returns: The updated organization JSON object
+    
+    :raises: ValueError: if the organization was not found or if the organization name already exists.
     '''
     session=get_db_session()
     
@@ -103,8 +111,13 @@ def update_organization(id: int, new_name: str):
 
 def delete_organization(id: int):
     '''
-    Delete an organization
+    Delete an organization.
+    
     @param id: ID of the organization in the DB
+    
+    :returns: The deleted organization JSON object
+    
+    :raises ValueError: If no organization with the given id was found
     '''
     session=get_db_session()
     
