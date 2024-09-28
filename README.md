@@ -18,6 +18,7 @@ First, create a .env file with the following content:
 PSQL_USERNAME='postgres'
 PSQL_PASSWORD='password'
 PSQL_URL='localhost:5432/postgres'
+```
 
 For example (based on the credentials and URL in the `db_setup.sh`): 
 `PSQL_USERNAME='postgres'
