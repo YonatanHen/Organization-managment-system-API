@@ -1,3 +1,13 @@
+## Overview
+This organization management system is a web application designed to facilitate the management of organizations, users, and endpoints within a streamlined framework. This application aims to provide an intuitive and efficient interface for managing organizational resources, making it easier for IT administrators to interact with the data they need.
+
+## Tech Stack
+- Python v3.12.5
+- Flask
+- SQLAlchemy
+- PostgreSQL DB
+- Docker
+
 ## API Documentation
 ### Base URL
 
