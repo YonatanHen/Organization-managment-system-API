@@ -8,12 +8,8 @@ def add_user():
     if request.method == 'POST':
         try:
             data = request.get_json()
-            
-            # Get 'ep_id' and 'ep_name', allowing at least one of them to be be specified 
-            ep_id = data.get('ep_id')
-            ep_name = data.get('ep_name')
 
-            user = create_user(data['name'], ep_id)
+            user = create_user(data['name'], data['ep_id'])
             
             return jsonify({"message": "User added successfully", "user": user}) 
             
