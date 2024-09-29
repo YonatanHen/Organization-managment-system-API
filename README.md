@@ -58,7 +58,7 @@ Please make sure the Docker Desktop is running, then run the `shell/db_setup.sh`
 Simply run the `shell/start_venv.sh` script.
 
 ### Run Server
-Simply run the `shell/start.sh` script which runs the Flask API server on localhost on port `5000`.
+Simply run the `shell/start.sh` script which runs the Flask API server on localhost, port `5000`.
 
 # API Documentation
 #### Base URL
@@ -74,15 +74,15 @@ Simply run the `shell/start.sh` script which runs the Flask API server on localh
 | Add Endpoint                         | POST    | `/endpoint/`                             | `{"name": <string>, "org_id": <int>\|"org_name": <string>}`     | `{"message": "Endpoint added successfully", "endpoint": {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}}` | Create a new endpoint.                       |
 | Update Endpoint                      | PUT     | `/endpoint/<endpoint_id>`               | `{"name": <string>\|"org_id": <int>\|"org_name": <string>}`     | `{"message": "Endpoint updated successfully", "endpoint": {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}}` | Update an existing endpoint by endpoint ID.  |
 | Delete Endpoint                      | DELETE  | `/endpoint/<endpoint_id>`               | N/A                                                  | `{"message": "Endpoint deleted successfully", "endpoint": {"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}}` | Delete an endpoint by endpoint ID.           |
-| Get User from Endpoint              | GET     | `/endpoint/<endpoint_id>/user/<user_id>`| N/A                                                  | `{"id": user.id, "name": user.name}`                 | Retrieve a user associated with an endpoint. |
-| Get Users from Endpoint             | GET     | `/endpoint/<endpoint_id>/users`         | N/A                                                  | `[{"id": user.id, "name": user.name}, ...]`          | Retrieve all users associated with an endpoint.|
+| Get User from Endpoint              | GET     | `/endpoint/<endpoint_id>/user/<user_id>`| N/A                                                  | `{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id}`                 | Retrieve a user associated with an endpoint. |
+| Get Users from Endpoint             | GET     | `/endpoint/<endpoint_id>/users`         | N/A                                                  | `[{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id}, ...]`          | Retrieve all users associated with an endpoint.|
 | Add Organization                     | POST    | `/organization/`                         | `{"name": <string>}`                                | `{"message": "Organization added successfully", "organization": {"id": organization.id, "name": organization.name}}` | Create a new organization.                   |
 | Update Organization                  | PUT     | `/organization/<organization_id>`       | `{"name": <string>}`                                | `{"message": "Organization updated successfully", "organization": {"id": organization.id, "name": organization.name}}` | Update an existing organization by ID.       |
 | Delete Organization                  | DELETE  | `/organization/<organization_id>`       | N/A                                                  | `{"message": "Organization deleted successfully", "organization": {"id": organization.id, "name": organization.name}}` | Delete an organization by ID.                |
 | Get User from Organization           | GET     | `/organization/<organization_id>/user/<user_id>` | N/A                                                  | `{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id}` | Retrieve a user associated with an organization. |
 | Get Users from Organization          | GET     | `/organization/<organization_id>/users` | N/A                                                  | `[{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id }, ...]` | Retrieve all users associated with an organization. |
 | Get Endpoint from Organization       | GET     | `/organization/<organization_id>/endpoint/<endpoint_id>` | N/A                                                  | `{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}` | Retrieve an endpoint associated with an organization. |
-| Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | N/A                                                  | `[{"id": endpoint.id, "name": endpoint.name}, ...]`  | Retrieve all endpoints associated with an organization. |
+| Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | N/A                                                  | `[{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}, ...]`  | Retrieve all endpoints associated with an organization. |
 
 # Testing
 Similarly to the application setup, all of the commands needed for testing purposes were created, and present in `shell\testing`.
@@ -109,9 +109,9 @@ ENVIRONMENT='TESTING'
 .
 .
 .
-PSQL_USERNAME='postgres'
-PSQL_PASSWORD='password'
-PSQL_URL='localhost:5433/postgres'
+PSQL_TEST_USERNAME='postgres'
+PSQL_TEST_PASSWORD='password'
+PSQL_TEST_URL='localhost:5433/postgres'
 ```
 
 Then, run the `test_db_setup.sh` to initialize the test DB. In order to restart the existing PSQL DB container, you can run the `start_test_db.sh`
