@@ -82,7 +82,7 @@ Simply run the `shell/start.sh` script which runs the Flask API server on localh
 | Get User from Organization           | GET     | `/organization/<organization_id>/user/<user_id>` | N/A                                                  | `{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id}` | Retrieve a user associated with an organization. |
 | Get Users from Organization          | GET     | `/organization/<organization_id>/users` | N/A                                                  | `[{"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id }, ...]` | Retrieve all users associated with an organization. |
 | Get Endpoint from Organization       | GET     | `/organization/<organization_id>/endpoint/<endpoint_id>` | N/A                                                  | `{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}` | Retrieve an endpoint associated with an organization. |
-| Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | N/A                                                  | `[{"id": endpoint.id, "name": endpoint.name}, ...]`  | Retrieve all endpoints associated with an organization. |
+| Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | N/A                                                  | `[{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}, ...]`  | Retrieve all endpoints associated with an organization. |
 
 # Testing
 Similarly to the application setup, all of the commands needed for testing purposes were created, and present in `shell\testing`.
