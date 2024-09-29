@@ -1,4 +1,4 @@
-## Overview
+# Overview
 This organization management system is a web application designed to facilitate the management of organizations, users, and endpoints within a streamlined framework. This application aims to provide an intuitive and efficient interface for managing organizational resources, making it easier for IT administrators to interact with the data they need.
 
 ### ERD:
@@ -91,8 +91,7 @@ Simply run the `shell/start.sh` script which runs the Flask API server on localh
 | Get Endpoint from Organization       | GET     | `/organization/<organization_id>/endpoint/<endpoint_id>` | N/A                                                  | `{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}` | Retrieve an endpoint associated with an organization. |
 | Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | N/A                                                  | `[{"id": endpoint.id, "name": endpoint.name}, ...]`  | Retrieve all endpoints associated with an organization. |
 
-## Testing
-
+# Testing
 Similarly to the application setup, all of the commands needed for testing purposes were created, and present in `shell\testing`.
 
 ### Initial Setup
@@ -127,7 +126,7 @@ Then, run the `test_db_setup.sh` to initialize the test DB. In order to restart 
 ### Running tests:
 Simply run the `run_tests.sh` that triggers the `tests.py` file in the project's root folder.
 
-## .env File example:
+# .env File example:
 ```plaintext
 #Set ENVIRONMENT value to 'PRODUCTION' if you want to run the production DB. Otherwise, testing DB will be selected.
 ENVIRONMENT='PRODUCTION'
