@@ -109,9 +109,9 @@ ENVIRONMENT='TESTING'
 .
 .
 .
-PSQL_USERNAME='postgres'
-PSQL_PASSWORD='password'
-PSQL_URL='localhost:5433/postgres'
+PSQL_TEST_USERNAME='postgres'
+PSQL_TEST_PASSWORD='password'
+PSQL_TEST_URL='localhost:5433/postgres'
 ```
 
 Then, run the `test_db_setup.sh` to initialize the test DB. In order to restart the existing PSQL DB container, you can run the `start_test_db.sh`
