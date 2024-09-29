@@ -58,7 +58,7 @@ Please make sure the Docker Desktop is running, then run the `shell/db_setup.sh`
 Simply run the `shell/start_venv.sh` script.
 
 ### Run Server
-Simply run the `shell/start.sh` script which runs the Flask API server on localhost on port `5000`.
+Simply run the `shell/start.sh` script which runs the Flask API server on localhost, port `5000`.
 
 # API Documentation
 #### Base URL
