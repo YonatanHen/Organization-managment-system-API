@@ -1,5 +1,5 @@
 #Start the virtual Environment
 source ../task-env/Scripts/activate
 
-#start PSQL contianer
+#start PSQL container
 docker start vicarius-task-db
