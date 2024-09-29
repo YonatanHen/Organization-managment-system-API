@@ -116,10 +116,10 @@ PSQL_URL='localhost:5433/postgres'
 
 Then, run the `test_db_setup.sh` to initialize the test DB. In order to restart the existing PSQL DB container, you can run the `start_test_db.sh`
 
-### Running tests:
+### Running Tests:
 Simply run the `run_tests.sh` that triggers the `tests.py` file in the project's root folder.
 
-# .env File example:
+# .env File Example:
 ```plaintext
 #Set ENVIRONMENT value to 'PRODUCTION' if you want to run the production DB. Otherwise, testing DB will be selected.
 ENVIRONMENT='PRODUCTION'
