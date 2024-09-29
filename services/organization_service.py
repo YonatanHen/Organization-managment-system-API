@@ -125,6 +125,12 @@ def create_organization(name: str):
     
     organization = Organization(name=name)
     
+    org_by_name = session.query(Organization).filter_by(name=name).first()
+    
+    if org_by_name is not None:
+        session.close()
+        raise ValueError(f"Organization '{name}' already exists.")
+    
     session.add(organization)
     session.commit()
     
