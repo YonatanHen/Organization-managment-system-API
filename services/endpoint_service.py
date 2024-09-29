@@ -73,7 +73,7 @@ def create_endpoint(name: str, org_id: int, org_name: str):
     :raises: ValueError: If the orgnization name/ID not provided or organization could not be found.
     '''
     session=get_db_session()
-    
+
     #Trying to find the organzition by id, then by name. If none of them provided, raise an exception.
     if org_id is not None:
         organization = session.query(Organization).filter_by(id=org_id).first()
@@ -82,10 +82,10 @@ def create_endpoint(name: str, org_id: int, org_name: str):
     else:
         session.close()
         raise ValueError(f"Either organization name or organization id must be provided. Can't add the endpoint.") 
-    
+
     if organization is None: 
         session.close()
-        raise ValueError(f"Could not find organization with id {org_id}.")
+        raise ValueError(f"Could not find organization with id or name provided.")
     
     endpoint = Endpoint(name=name)
 
