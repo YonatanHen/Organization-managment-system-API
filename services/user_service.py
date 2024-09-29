@@ -70,6 +70,9 @@ def create_user(name: str, ep_id: int):
     
     :raises: ValueError: If the given endpoint ID is not found
     '''
+    if not name or name.strip() == "":
+        raise KeyError
+
     session=get_db_session()
     
     endpoint = session.query(Endpoint).filter_by(id=ep_id).first()
@@ -104,6 +107,9 @@ def update_user(id: int, new_name: str, ep_id: int):
     
     :raises: ValueError: If the user or endpoint with the provided ID is not found, or if the new user name already exists
     '''
+    if not new_name or new_name.strip() == "":
+        raise KeyError
+    
     if not any([new_name, ep_id]):
         raise ValueError("At least one of 'new_name', or 'ep_id' must be provided in the payload.")
     

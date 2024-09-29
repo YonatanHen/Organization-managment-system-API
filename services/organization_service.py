@@ -121,6 +121,8 @@ def create_organization(name: str):
     
     :returns: New organization JSON object    
     '''
+    if not name or name.strip() == "":
+        raise KeyError
     session=get_db_session()
     
     organization = Organization(name=name)
@@ -152,6 +154,8 @@ def update_organization(id: int, new_name: str):
     
     :raises: ValueError: if the organization was not found or if the organization name already exists.
     '''
+    if not new_name or new_name.strip() == "":
+        raise KeyError
     session=get_db_session()
     
     organization = session.query(Organization).filter_by(id=id).first()

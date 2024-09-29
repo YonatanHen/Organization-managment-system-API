@@ -72,6 +72,9 @@ def create_endpoint(name: str, org_id: int, org_name: str):
     
     :raises: ValueError: If the orgnization name/ID not provided or organization could not be found.
     '''
+    if not name or name.strip() == "":
+        raise KeyError
+    
     session=get_db_session()
 
     #Trying to find the organzition by id, then by name. If none of them provided, raise an exception.
@@ -114,6 +117,9 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
     
     :raises: ValueError: if the endpoint wasn't found, or organization ID/name was not found.
     '''
+    if not new_name or new_name.strip() == "":
+        raise KeyError
+    
     if not any([new_name, org_id, new_org]):
         raise ValueError("At least one of 'new_name', 'org_id', or 'new_org' must be provided in the payload.")
     
@@ -140,7 +146,7 @@ def update_endpoint(id: int, new_name: str, org_id: int, new_org: str):
         if organization is None:
             session.close()
             if org_id:
-                raise ValueError(f"Could not find organization with id {org_id}.")
+                raise ValueError(f"Could not find organization with id #{org_id}.")
             elif new_org:
                 raise ValueError(f"Could not find organization with name {new_org}.")
             

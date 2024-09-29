@@ -15,12 +15,15 @@ def add_organization():
             return jsonify({"message": "Organization added successfully", "organization": organization}) 
             
         except KeyError:
-            # Handle missing 'name' in the request payload
+            # Handle missing or empty 'name' in the request payload
             return jsonify({'error': 'The "name" field is required.'}), 400 
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500
         except ValueError as e:
-            return jsonify({'error': str(e)}), 404
+            err_msg=str(e)
+            if err_msg == f"Organization '{data['name']}' already exists.":
+                return jsonify({'error': err_msg}), 409
+            return jsonify({'error': err_msg}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
           
@@ -36,7 +39,7 @@ def update_or_delete_organization(id: int):
             return jsonify({"message": "Organization updated successfully", "organization": organization})    
                  
         except KeyError:
-            # Handle missing 'name' in the request payload
+            # Handle missing or empty 'name' in the request payload
             return jsonify({'error': 'The "name" field is required.'}), 400
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500

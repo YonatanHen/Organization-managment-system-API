@@ -24,7 +24,10 @@ def add_endpoint():
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500
         except ValueError as e:
-            return jsonify({'error': str(e)}), 404
+            err_msg=str(e)
+            if err_msg == f"Organization '{data['name']}' already exists.":
+                return jsonify({'error': err_msg}), 409
+            return jsonify({'error': err_msg}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500
         
@@ -51,7 +54,10 @@ def update_or_delete_endpoint(id: int):
         except SQLAlchemyError as e:
             return jsonify({'error': 'Database error occurred.'}), 500
         except ValueError as e:
-            return jsonify({'error': str(e)}), 404
+            err_msg=str(e)
+            if err_msg == f"Organization '{data['name']}' already exists.":
+                return jsonify({'error': err_msg}), 409
+            return jsonify({'error': err_msg}), 404
         except Exception as e:
             return jsonify({'error': 'An error occurred', 'message': str(e)}), 500            
 
