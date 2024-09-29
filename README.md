@@ -125,3 +125,18 @@ Then, run the `test_db_setup.sh` to initialize the test DB. In order to restart 
 ### Running tests:
 Simply run the `run_tests.sh` that triggers the `tests.py` file in the project's root folder.
 
+## .env File example:
+```plaintext
+#Set ENVIRONMENT value to 'PRODUCTION' if you want to run the production DB. Otherwise, testing DB will be selected.
+ENVIRONMENT='PRODUCTION'
+
+#Production environment variables
+PSQL_USERNAME='postgres'
+PSQL_PASSWORD='password'
+PSQL_URL='localhost:5432/postgres'
+
+#Testing environment variables
+PSQL_TEST_USERNAME='postgres'
+PSQL_TEST_PASSWORD='password'
+PSQL_TEST_URL='localhost:5433/postgres'
+```
