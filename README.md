@@ -61,10 +61,9 @@ Simply run the `shell/start_venv.sh` script.
 Simply run the `shell/start.sh` script which runs the Flask API server on localhost on port `5000`.
 
 # API Documentation
-### Base URL
+#### Base URL
 `http://localhost:5000`
 
-## Endpoints
 | API Name                             | Method  | Endpoint                                 | Payload                                               | Response                                               | Description                                   |
 |--------------------------------------|---------|------------------------------------------|------------------------------------------------------|--------------------------------------------------------|-----------------------------------------------|
 | Add User                             | POST    | `/user/`                                 | `{"name": <string>, "ep_id": <int>}`         | `{"message": "User added successfully", "user": {"id": user.id, "name": user.name, "endpoint_id": user.endpoint_id, "organization_id": endpoint.organization_id}}` | Create a new user.                           |
