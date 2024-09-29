@@ -1,10 +1,16 @@
 import unittest
+import os
+import sys
 
 from services.organization_service import *
 from services.endpoint_service import *
 from services.user_service import *
 from models import Base
 from DB.psql_connection import engine
+
+if os.getenv('ENVIRONMENT') == 'PRODUCTION':
+    print("Tests are disabled in the PRODUCTION environment.")
+    sys.exit(0)
 
 class TestApplication(unittest.TestCase):
     
