@@ -12,7 +12,7 @@ This organization management system is a web application designed to facilitate 
 - Docker
 - unittest
 
-** Tasks were managed with the GitHub "Projects" in this repository.
+** Tasks are managed under the ["Projects"](https://github.com/users/YonatanHen/projects/4) section in this repository.
 
 ## Installation & Setup Instructions
 Installation and setup scripts were created under the `shell` folder in this project.
