@@ -1,6 +1,9 @@
 ## Overview
 This organization management system is a web application designed to facilitate the management of organizations, users, and endpoints within a streamlined framework. This application aims to provide an intuitive and efficient interface for managing organizational resources, making it easier for IT administrators to interact with the data they need.
 
+### ERD:
+![image](https://github.com/user-attachments/assets/92febd11-5f29-4ba8-8785-4a0d4486988c)
+
 ## Tech Stack
 - Python v3.12.5
 - Flask
@@ -16,15 +19,18 @@ Installation and setup scripts were created under the `shell` folder in this pro
 First, create a .env file with the following content:
 
 ```plaintext
+ENVIRONMENT='PRODUCTION'
+PSQL_USERNAME=<PSQL production DB connection username>
+PSQL_PASSWORD=<PSQL production DB connection password>
+PSQL_URL=<PSQL production DB connection URL>
+```
+
+For example (based on the credentials and URL in the `db_setup.sh`): 
+```plaintext
 PSQL_USERNAME='postgres'
 PSQL_PASSWORD='password'
 PSQL_URL='localhost:5432/postgres'
 ```
-
-For example (based on the credentials and URL in the `db_setup.sh`): 
-`PSQL_USERNAME='postgres'
-PSQL_PASSWORD='password'
-PSQL_URL='localhost:5432/postgres'`
 
 Run the `shell/create_venv.sh` shell script to create a virtual environment called task-env, and install the application's dependencies listed in the `requirements.txt` file:
 ```plaintext
@@ -83,10 +89,39 @@ Simply run the `shell/start.sh` script which runs the Flask API server on localh
 | Get Endpoint from Organization       | GET     | `/organization/<organization_id>/endpoint/<endpoint_id>` | N/A                                                  | `{"id": endpoint.id, "name": endpoint.name, "organization_id": endpoint.organization_id}` | Retrieve an endpoint associated with an organization. |
 | Get Endpoints from Organization      | GET     | `/organization/<organization_id>/endpoints` | N/A                                                  | `[{"id": endpoint.id, "name": endpoint.name}, ...]`  | Retrieve all endpoints associated with an organization. |
 
+## Testing
 
-### Error Handling
+Similarly to the application setup, all of the commands needed for testing purposes were created, and present in `shell\testing`.
 
-All endpoints handle and return appropriate error messages and HTTP status codes in case of some errors. The error responses generally include the following:
-- `400`: Bad Request.
-- `404`: Resource or endpoint not found.
-- `500`: Internal Server Error or DB-related Error.
+### Initial Setup
+Please edit the .env file as follows:
+```plaintext
+#Set the ENVIRONMENT value to 'PRODUCTION' if you want to run the production DB. Otherwise, testing DB will be selected.
+ENVIRONMENT=<'TESTING'|any other text which is not 'PRODUCTION'>
+
+#Production environment variables
+PSQL_USERNAME=<PSQL production DB connection username>
+PSQL_PASSWORD=<PSQL production DB connection password>
+PSQL_URL=<PSQL production DB connection URL>
+#Testing environment variables
+PSQL_TEST_USERNAME=<PSQL testing DB connection username>
+PSQL_TEST_PASSWORD=<PSQL testing DB connection password>
+PSQL_TEST_URL=<PSQL testing DB connection URL>
+```
+
+For example (based on the credentials and URL in the `test_db_setup.sh`): 
+```plaintext
+ENVIRONMENT='TESTING'
+.
+.
+.
+PSQL_USERNAME='postgres'
+PSQL_PASSWORD='password'
+PSQL_URL='localhost:5433/postgres'
+```
+
+Then, run the `test_db_setup.sh` to initialize the test DB. In order to restart the existing PSQL DB container, you can run the `start_test_db.sh`
+
+### Running tests:
+Simply run the `run_tests.sh` that triggers the `tests.py` file in the project's root folder.
+
