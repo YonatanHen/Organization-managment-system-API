@@ -1,5 +1,5 @@
 # Overview
-This organization management system is a web application designed to facilitate the management of organizations, users, and endpoints within a streamlined framework. This application aims to provide an intuitive and efficient interface for managing organizational resources, making it easier for IT administrators to interact with the data they need.
+This organization management system is a web application designed to facilitate the management of organizations, users, and endpoints within a streamlined framework. This application aims to provide an intuitive and efficient interface for managing organizational resources, making it easier for IT administrators to interact with the data they need. 
 
 ### ERD:
 ![image](https://github.com/user-attachments/assets/92febd11-5f29-4ba8-8785-4a0d4486988c)
